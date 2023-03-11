@@ -77,9 +77,10 @@ public class UserServiceImpl implements UserService {
         // delete image from path before deleting user
         // image/user/abc.png
         String fullPath = imagePath + user.getImageName();
-
+        logger.info("Path of img : {} " , fullPath);
         try{
             Path path = Paths.get(fullPath);
+            logger.info("Path of img : {} " , path);
             Files.delete(path);
         }
         catch (NoSuchElementException e){
