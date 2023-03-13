@@ -2,10 +2,11 @@ package com.java.electro.store.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,5 +26,8 @@ public class Category {
     private String description;
     private String coverImage;
 
-    // other attributes if required
+    @OneToMany(mappedBy = "category" ,cascade = CascadeType.ALL  ,fetch = FetchType.LAZY)
+    private List<Product> products = new ArrayList<>();
+
+
 }

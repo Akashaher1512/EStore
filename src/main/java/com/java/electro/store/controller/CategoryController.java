@@ -3,6 +3,7 @@ package com.java.electro.store.controller;
 import com.java.electro.store.dto.*;
 import com.java.electro.store.service.CategoryService;
 import com.java.electro.store.service.FileService;
+import com.java.electro.store.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class CategoryController {
 
     @Value("${category.coverImage.path}")
     private String imageUploadPath;
+
+    @Autowired
+    private ProductService productService;
 
     @PostMapping
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto){
@@ -113,4 +117,35 @@ public class CategoryController {
 
         StreamUtils.copy(resource , response.getOutputStream());
     }
+
+    // create product with category
+    @PostMapping("/{categoryId}/products")
+    public ResponseEntity<ProductDto> createProductWithCategory(@RequestBody ProductDto productDto , @PathVariable String categoryId){
+        ProductDto productWithCategory = productService.createWithCategory(productDto, categoryId);
+
+        return  new ResponseEntity<>(productWithCategory , HttpStatus.CREATED);
+    }
+
+    // update category of product
+    @PutMapping("/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateProductCategory(@PathVariable String productId , @PathVariable String categoryId){
+        ProductDto productDto = productService.updateProductCategory(productId, categoryId);
+
+        return new ResponseEntity<>(productDto ,HttpStatus.OK);
+    }
+
+    // get products of specific category
+    @GetMapping("/{categoryId}/products")
+    public ResponseEntity<PageableResponse> getProductsOfCategory(
+            @PathVariable String categoryId,
+            @RequestParam(value = "pageNumber" ,defaultValue = "0" , required = false) int pageNumber,
+            @RequestParam(value = "pageSize" ,defaultValue = "10" , required = false) int pageSize,
+            @RequestParam(value = "sortBy" ,defaultValue = "title" , required = false) String sortBy,
+            @RequestParam(value = "sortDir" ,defaultValue = "ASC" , required = false) String sortDir
+    ){
+        PageableResponse<ProductDto> products = productService.getAllOfCategory(categoryId, pageNumber, pageSize, sortBy, sortDir);
+
+        return new ResponseEntity<>(products ,HttpStatus.OK);
+    }
+
 }

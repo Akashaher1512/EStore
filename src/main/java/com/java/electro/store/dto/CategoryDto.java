@@ -1,8 +1,8 @@
 package com.java.electro.store.dto;
 
+import com.java.electro.store.validate.ImageNameValid;
 import lombok.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CategoryDto {
 
     private String categoryId;
@@ -22,5 +21,8 @@ public class CategoryDto {
     @NotBlank(message = "Description required..!!")
     private String description;
 
+    @ImageNameValid
     private String coverImage;
+
+
 }
