@@ -31,4 +31,5 @@ public class UserDto {
     // Custom validator
     @ImageNameValid
     private String imageName;
+
 }
