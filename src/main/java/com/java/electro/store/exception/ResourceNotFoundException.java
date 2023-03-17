@@ -6,6 +6,7 @@ import lombok.Builder;
 public class ResourceNotFoundException extends RuntimeException{
 
     public ResourceNotFoundException(){
+
         super("Resource Not Found ..!!");
     }
 

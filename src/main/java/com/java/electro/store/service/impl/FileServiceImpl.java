@@ -27,14 +27,14 @@ public class FileServiceImpl implements FileService {
         // generating random name of file to save in db
         String filename = UUID.randomUUID().toString();
 
-        // getting extension (abc.png) => (png) //to save original extension we need to extract extension
+        // getting extension (abc.png) => (png) //to save original extension we need to extract extension  iphone.jpg
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 
-        String fileNameWithExtension = filename + extension ;
+        String fileNameWithExtension = filename + extension ;   // randomString.jpg
 
         // path + separator(\) + abc.png
         // at this path w are going to upload image
-         String fullPathWithFileName = path + fileNameWithExtension;
+         String fullPathWithFileName = path + fileNameWithExtension;    // /images/user/randomString.jpg
         logger.info("Full path With file Name is " + fullPathWithFileName);
          if(extension.equalsIgnoreCase(".png") || extension.equalsIgnoreCase(".jpg") || extension.equalsIgnoreCase(".jpeg")){
              // file save
