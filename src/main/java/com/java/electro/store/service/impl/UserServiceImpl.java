@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Value("${user.profile.image.path}")
     private String imagePath;
 
@@ -47,6 +51,10 @@ public class UserServiceImpl implements UserService {
         String userId = UUID.randomUUID().toString();
 
         userDto.setId(userId);
+        // set encoding password
+        String password = userDto.getPassword();
+
+        userDto.setPassword(passwordEncoder.encode(password));
 
         User user = DtoToUser(userDto);
 
