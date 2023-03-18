@@ -5,6 +5,7 @@ import com.java.electro.store.dto.UserDto;
 import com.java.electro.store.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -29,4 +30,6 @@ public interface UserService {
     //search user
     List<UserDto> searchUser(String keyword);
     // other user specific features
+
+    Optional<User> findUserByOptional(String email);
 }

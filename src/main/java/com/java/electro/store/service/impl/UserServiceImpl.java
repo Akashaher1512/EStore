@@ -2,9 +2,11 @@ package com.java.electro.store.service.impl;
 
 import com.java.electro.store.dto.PageableResponse;
 import com.java.electro.store.dto.UserDto;
+import com.java.electro.store.entity.Role;
 import com.java.electro.store.entity.User;
 import com.java.electro.store.exception.ResourceNotFoundException;
 import com.java.electro.store.helper.Helper;
+import com.java.electro.store.repository.RoleRepository;
 import com.java.electro.store.repository.UserRepository;
 import com.java.electro.store.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -25,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,7 +46,12 @@ public class UserServiceImpl implements UserService {
     @Value("${user.profile.image.path}")
     private String imagePath;
 
+    @Value("${normal.role.id}")
+    private String role_normal_id;
+    @Autowired
+    private RoleRepository roleRepository;
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public UserDto createUser(UserDto userDto) {
 
@@ -58,6 +66,10 @@ public class UserServiceImpl implements UserService {
 
         User user = DtoToUser(userDto);
 
+        // fetch role of normal user and set it
+        Role role = roleRepository.findById(role_normal_id).get();
+
+        user.getRoles().add(role);
         User savedUser = userRepository.save(user);
 
         return userToDto(savedUser);
@@ -149,6 +161,11 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findByNameContaining(keyword);
 
         return users.stream().map((user)-> userToDto(user)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<User> findUserByOptional(String email) {
+        return userRepository.findByEmail(email);
     }
 
     private User DtoToUser(UserDto userDto){
