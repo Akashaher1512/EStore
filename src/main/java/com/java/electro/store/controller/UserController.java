@@ -6,6 +6,8 @@ import com.java.electro.store.dto.PageableResponse;
 import com.java.electro.store.dto.UserDto;
 import com.java.electro.store.service.FileService;
 import com.java.electro.store.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Api(value = "userController" , description = "REST apis related User Management Activity")
 public class UserController {
 
     @Autowired
@@ -68,6 +70,7 @@ public class UserController {
 
     //get all
     @GetMapping
+    @ApiOperation(value = "Get All Users" ,response = ResponseEntity.class , tags = {"user-controller","user-apis"})
     public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
             @RequestParam(value = "pageNumber" ,defaultValue = "0" , required = false) int pageNumber,
             @RequestParam(value = "pageSize" ,defaultValue = "10" , required = false) int pageSize,

@@ -11,6 +11,7 @@ import com.java.electro.store.entity.User;
 import com.java.electro.store.exception.BadApiRequest;
 import com.java.electro.store.security.JwtHelper;
 import com.java.electro.store.service.UserService;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Api(value = "Authentication Controller" , description = "REST apis related Authentication Activity")
 public class AuthController {
 
     @Autowired
@@ -50,7 +52,6 @@ public class AuthController {
     @Autowired
     private JwtHelper helper;
 
-    @Autowired
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Value("${googleClientId}")
@@ -89,7 +90,7 @@ public class AuthController {
     }
 
 
-    // login with google
+    // login with Google
     @PostMapping("/google")
     public ResponseEntity<JwtResponse> loginWithGoogle(@RequestBody Map<String , Object> data) throws IOException {
         // get id token from request
